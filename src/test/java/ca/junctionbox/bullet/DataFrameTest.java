@@ -1,10 +1,14 @@
 package ca.junctionbox.bullet;
 
+import ca.junctionbox.bullet.data.ValueTypes;
+import ca.junctionbox.bullet.data.Data;
+import ca.junctionbox.bullet.data.StringColumn;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static ca.junctionbox.bullet.Accumulators.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -19,8 +23,8 @@ public class DataFrameTest {
 
     @Test
     public void should_create_empty_data_frame() {
-        assertThat(df.size(), is(0));
-        assertThat(Data.frame(), is(instanceOf(Data.class)));
+        assertThat("rowCount should be", df.rowCount(), is(0));
+        assertThat("instance should be", Data.frame(), is(instanceOf(Data.class)));
     }
 
     @Test
@@ -28,132 +32,53 @@ public class DataFrameTest {
         String names[] = { "Nathan", "Mark", "James", "Ian" };
 
         df.col("names", names);
-        assertThat(df.size(), is(4));
+        assertThat("rowCount should be", df.rowCount(), is(4));
+        assertThat("index should be", df.findIndex("names"), is(0));
+        assertThat("col should be", df.col("names"), is(instanceOf(StringColumn.class)));
+        assertThat("type should be", df.col("names").type(), is(ValueTypes.STRING));
     }
 
     @Test
     public void should_allow_column_of_integers_to_be_set() {
         int ages[] = { 30, 35, 25, 30 };
         df.col("ages", ages);
-        assertThat(df.size(), is(4));
+        assertThat("rowCount should be", df.rowCount(), is(4));
+        assertThat("type should be", df.col("ages").type(), is(ValueTypes.INTEGER));
     }
 
     @Test
-    public void should_df() {
+    public void should_return_expected_results_when_accumulators_are_applied() {
         int ages[] = { 30, 35, 25, 30 };
-        assertThat(df.size(), is(0));
+        df.col("ages", ages);
+        assertThat("sum should be", sum(df, "ages"), is(120L));
+        assertThat("min should be", min(df, "ages"), is(25));
+        assertThat("count should be", count(df, "ages"), is(4));
+        assertThat("mean should be", mean(df, "ages"), closeTo(30.0, 0.0001));
+        assertThat("variance should be", variance(df, "ages"), closeTo(16.66664295, 0.0001));
+
+        /*
+        assertThat("stddev should be", stddev(df, "ages"), closeTo(4.08248, 0.0001));
+        Numeric vt = sum(df.col("ages"), gt(30));
+        Numeric vt = count(df.col("ages"), lt(30));
+        Numeric nt = div(sub(df.col("ages"), min(df.col("ages"))), 1000);
+        */
+    }
+
+    @Test
+    public void toString_should_dump_columns() {
+        final int[] ages = { 30, 35, 25, 30 };
+        final String[] names = { "Nathan", "Mark", "James", "Ian" };
+        df.col("names", names);
+        df.col("ages", ages);
+        System.out.println(df);
+        final String expected =
+                "names\tages\n" +
+                "Nathan\t30\n" +
+                "Mark\t35\n" +
+                "James\t25\n" +
+                "Ian\t30\n";
+        assertThat("string should be formatted correctly", df.toString(), is(equalTo(expected)));
     }
 }
 
-class Data {
-    public static final int START_SIZE=16;
 
-    private String[] columnNames = new String[START_SIZE];
-    private Column[] columnData = new Column[START_SIZE];
-    private int columnCount = 0;
-
-    private Data() { }
-
-    public static Data frame() {
-        return new Data();
-    }
-
-    private void appendColumn(final String colName, final Column colData) {
-        columnNames[columnCount] = colName;
-        columnData[columnCount] = colData;
-        columnCount++;
-    }
-
-    public void col(final String colName, final String[] colData) {
-        appendColumn(colName, StringColumn.create(colName, colData));
-    }
-
-    public void col(final String colName, final int[] colData) {
-        appendColumn(colName, IntegerColumn.create(colName, colData));
-    }
-
-    public Integer size() {
-        if (columnCount > 0) {
-            return columnData[0].size();
-        }
-        return 0;
-    }
-
-    public void apply(final String column, final Applicable f) {
-
-    }
-}
-
-enum ColumnTypes {
-    STRING,
-    INTEGER,
-    DOUBLE
-}
-
-interface Column {
-
-    public ColumnTypes type();
-    public int size();
-    public String name();
-}
-
-class StringColumn implements Column {
-    private final String columnName;
-    private final String columnData[];
-
-
-    public static StringColumn create(final String colName, final String [] colData) {
-        return new StringColumn(colName, colData);
-    }
-
-    private StringColumn(final String colName, final String [] colData) {
-        columnName = colName;
-        columnData = colData;
-    }
-
-    public ColumnTypes type() {
-        return ColumnTypes.STRING;
-    }
-
-    public int size() {
-        return columnData.length;
-    }
-
-    @Override
-    public String name() {
-        return columnName;
-    }
-}
-
-class IntegerColumn implements Column {
-    private final int[] columnData;
-    private final String columnName;
-
-    public static IntegerColumn create(final String colName, final int[] colData) {
-        return new IntegerColumn(colName, colData);
-    }
-
-    private IntegerColumn(final String colName, final int[] colData) {
-        columnName = colName;
-        columnData = colData;
-    }
-
-    @Override
-    public ColumnTypes type() {
-        return ColumnTypes.INTEGER;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public int size() {
-        return columnData.length;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String name() {
-        return columnName;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-}
-
-interface Applicable {
-    void each(final Object o);
-}
