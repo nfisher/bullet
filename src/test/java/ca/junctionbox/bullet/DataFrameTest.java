@@ -59,8 +59,9 @@ public class DataFrameTest {
         assertThat("count should be", count(df, "ages"), is(4));
         assertThat("variancen should be", variancen(df, "ages", mean), closeTo(16.66664295, 0.0001));
 
-        /*
-        assertThat("stddev should be", stddev(df, "ages"), closeTo(4.08248, 0.0001));
+
+        assertThat("stddev should be", sd(df, "ages"), closeTo(4.08248, 0.0001));
+        /**
         Numeric vt = sum(df.col("ages"), gt(30));
         Numeric vt = count(df.col("ages"), lt(30));
         Numeric nt = div(sub(df.col("ages"), min(df.col("ages"))), 1000);

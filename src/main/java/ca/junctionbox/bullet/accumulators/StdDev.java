@@ -8,14 +8,12 @@ import ca.junctionbox.bullet.Applicable;
  * Time: 19:45
  */
 public final class StdDev implements Applicable {
-    /**
-     *
-     */
-    private double result = 0;
+    // TODO: (NF 2013-09-25) Should probably use a factory method and create an accumulator interface.
+    private final KnuthVariance variance = new KnuthVariance();
 
     @Override
     public void each(final long i) {
-
+        variance.each(i);
     }
 
     /**
@@ -23,6 +21,6 @@ public final class StdDev implements Applicable {
      * @return
      */
     public double getResult() {
-        return result;
+        return Math.sqrt(variance.getResult());
     }
 }

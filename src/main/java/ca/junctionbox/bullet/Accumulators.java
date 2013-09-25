@@ -70,13 +70,13 @@ public final class Accumulators {
         return df.rowCount();
     }
 
-    /** utility function to calculate stddev.
+    /** utility function to calculate sd.
      *
-     * @param df - data frame to apply the stddev() operation to.
-     * @param colName - column name to calculate the stddev of.
-     * @return - the stddev of the specified column.
+     * @param df - data frame to apply the sd() operation to.
+     * @param colName - column name to calculate the sd of.
+     * @return - the sd of the specified column.
      */
-    public static double stddev(final Data df, final String colName) {
+    public static double sd(final Data df, final String colName) {
         StdDev sd = new StdDev();
         df.apply(sd, colName);
         return sd.getResult();
