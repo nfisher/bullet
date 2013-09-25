@@ -54,7 +54,7 @@ public final class Accumulators {
      * @param colName - column name to calculate the min of.
      * @return - the minimum value in the column.
      */
-    public static int min(final Data df, final String colName) {
+    public static long min(final Data df, final String colName) {
         Min min = new Min();
         df.apply(min, colName);
         return min.getResult();
@@ -82,15 +82,29 @@ public final class Accumulators {
         return sd.getResult();
     }
 
-    /**
+    /** naively calculated variance using a numerically unstable method.
      *
-     * @param df - data frame to apply the variance() operation against.
+     *
+     * @param df - data frame to apply the variancen() operation against.
      * @param colName - column name to calculate the variance of.
+     * @param mean - the mean of the specified column.
      * @return - the variance of the specified column.
      */
-    public static double variance(final Data df, final String colName) {
-        Variance var = new Variance();
+    public static double variancen(final Data df, final String colName, final double mean) {
+        NaiveVariance var = new NaiveVariance(mean);
         df.apply(var, colName);
+        return var.getResult();
+    }
+
+    /** Knuth calculated variance.
+     *
+     * @param df - data frame.
+     * @param colname - column to have variancek applied to.
+     * @return - the calculated variance.
+     */
+    public static double variancek(final Data df, final String colname) {
+        KnuthVariance var = new KnuthVariance();
+        df.apply(var, colname);
         return var.getResult();
     }
 
@@ -98,10 +112,22 @@ public final class Accumulators {
      *
      * @param df - data frame to apply the mean() operation against.
      * @param colName - column name to calculate the mean of.
-     * @return
+     * @return - the mean of the column.
      */
     public static double mean(final Data df, final String colName) {
-        Mean mean = new Mean(df.rowCount());
+        Mean mean = new Mean();
+        df.apply(mean, colName);
+        return mean.getResult();
+    }
+
+    /**
+     *
+     * @param df - data frame to apply the meanw() operation against.
+     * @param colName - column to calculate the mean of.
+     * @return - the weighted mean of the column.
+     */
+    public static double meanw(final Data df, final String colName) {
+        WeightedMean mean = new WeightedMean();
         df.apply(mean, colName);
         return mean.getResult();
     }

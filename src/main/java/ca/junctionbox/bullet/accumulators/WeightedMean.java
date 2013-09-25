@@ -2,20 +2,14 @@ package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
 
-/** Calculates the standard deviation of a column.
+/** Calculates the mean using accumulative weights.
  *
- * Date: 10/09/2013
- * Time: 19:45
  */
-public final class StdDev implements Applicable {
-    /**
-     *
-     */
-    private double result = 0;
+public final class WeightedMean implements Applicable {
 
     @Override
     public void each(final long i) {
-
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -23,6 +17,6 @@ public final class StdDev implements Applicable {
      * @return
      */
     public double getResult() {
-        return result;
+        return 0;
     }
 }

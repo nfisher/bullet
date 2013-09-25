@@ -10,5 +10,5 @@ public interface Applicable {
      *
      * @param i - the integer value.
      */
-    void each(final int i);
+    void each(final long i);
 }

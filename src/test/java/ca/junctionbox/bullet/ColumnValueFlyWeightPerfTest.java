@@ -1,32 +1,31 @@
 package ca.junctionbox.bullet;
 
-import ca.junctionbox.bullet.data.Data;
+import ca.junctionbox.bullet.data.LongColumn;
+import ca.junctionbox.bullet.data.LongValue;
 
 import java.util.Date;
-
-import static ca.junctionbox.bullet.Accumulators.sum;
 
 /**
  *
 
- Thu Sep 12 21:27:25 BST 2013
+ Thu Sep 19 18:56:57 BST 2013
  type   run     totalMemory      freeMemory duration  mean             sum
- df       0   4,116,054,016   2,094,106,664      237   4.0   2,250,000,000
- df       1   4,116,054,016   2,115,586,664      224   4.0   2,250,000,000
- df       2   4,116,054,016   2,094,110,936      224   4.0   2,250,000,000
- df       3   4,116,054,016   2,115,584,152      223   4.0   2,250,000,000
- df       4   4,116,054,016   2,115,584,152      223   4.0   2,250,000,000
- df       5   4,116,054,016   2,115,584,152      223   4.0   2,250,000,000
- df       6   4,116,054,016   2,115,584,152      222   4.0   2,250,000,000
- df       7   4,116,054,016   2,115,584,152      229   4.0   2,250,000,000
- df       8   4,116,054,016   2,115,584,152      229   4.0   2,250,000,000
- df       9   4,116,054,016   2,115,584,152      256   4.0   2,250,000,000
+ cvf      0   4,116,054,016   1,694,106,576      202   4.0   1,350,000,000
+ cvf      1   4,116,054,016   1,715,587,096      198   4.0   1,350,000,000
+ cvf      2   4,116,054,016   1,715,587,448      193   4.0   1,350,000,000
+ cvf      3   4,116,054,016   1,694,113,472      194   4.0   1,350,000,000
+ cvf      4   4,116,054,016   1,715,584,304      195   4.0   1,350,000,000
+ cvf      5   4,116,054,016   1,715,584,304      223   4.0   1,350,000,000
+ cvf      6   4,116,054,016   1,715,584,304      195   4.0   1,350,000,000
+ cvf      7   4,116,054,016   1,715,584,328      202   4.0   1,350,000,000
+ cvf      8   4,116,054,016   1,715,584,328      198   4.0   1,350,000,000
+ cvf      9   4,116,054,016   1,715,584,328      197   4.0   1,350,000,000
 
  *
  */
-public class DataFramePerfTest {
+public class ColumnValueFlyWeightPerfTest {
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws InterruptedException {
         System.err.format("Memory %,d total, %,d free\n",
                 Runtime.getRuntime().totalMemory(),
                 Runtime.getRuntime().freeMemory());
@@ -49,17 +48,22 @@ public class DataFramePerfTest {
         final long[] array = createRows();
 
         final long start = System.currentTimeMillis();
+        long sum = 0;
         long totalMemory = Runtime.getRuntime().totalMemory();
         long freeMemory = Runtime.getRuntime().freeMemory();
-        Data df = Data.frame();
-        df.col("a", array);
-        long s = sum(df, "a");
-        double mean = s / array.length;
+
+        LongColumn longColumn = LongColumn.create("test", array);
+        LongValue lv = new LongValue();
+        for (int i = 0; i < array.length; i++) {
+            longColumn.row(i, lv);
+            sum += lv.asLong();
+        }
+        double mean = sum / array.length;
 
         final long duration = System.currentTimeMillis() - start;
 
         System.out.format("%1$-5s %2$4s %3$,15d %4$,15d %5$8s %6$5s %7$,15d\n",
-                "df", runNum, totalMemory, freeMemory, duration, mean, s);
+                "cvf", runNum, totalMemory, freeMemory, duration, mean, sum);
     }
 
     private static long[] createRows() {

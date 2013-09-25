@@ -14,7 +14,7 @@ public final class Sum implements Applicable {
     private long total = 0;
 
     @Override
-    public void each(final int i) {
+    public void each(final long i) {
         // TODO: (NF 2013-09-10) Handle overflow.
         total += i;
     }

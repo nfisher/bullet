@@ -29,8 +29,8 @@ public final class StringColumn implements Column {
 
     /**
      *
-     * @param colName
-     * @param colData
+     * @param colName -
+     * @param colData -
      */
     private StringColumn(final String colName, final String [] colData) {
         columnName = colName;
@@ -63,5 +63,12 @@ public final class StringColumn implements Column {
         for (String row : columnData) {
             //f.each(row);
         }
+    }
+
+    @Override
+    public Value row(final int r) {
+        // TODO (NF 2013-09-13) Watch the GC fly with this little diddy.
+        // Should probably inject a fly-weight that's created per thread.
+        return new StringValue(columnData[r]);
     }
 }

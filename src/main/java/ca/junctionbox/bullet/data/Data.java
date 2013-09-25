@@ -75,8 +75,8 @@ public final class Data {
      * @param colName -
      * @param colData -
      */
-    public void col(final String colName, final int[] colData) {
-        appendColumn(colName, IntegerColumn.create(colName, colData));
+    public void col(final String colName, final long[] colData) {
+        appendColumn(colName, LongColumn.create(colName, colData));
     }
 
     /**
@@ -133,15 +133,18 @@ public final class Data {
     public String toString() {
         // for now will lazily set 1 tab between columns and newlines between rows.
         StringBuilder sb = new StringBuilder();
-        int i = 0;
+        int c = 0;
         for (String col : columnNames) {
-            if (i >= columnCount) break;
+            if (c >= columnCount) break;
             sb.append(col);
-            sb.append((++i < columnCount) ? "\t" : "\n");
+            sb.append((++c < columnCount) ? "\t" : "\n");
         }
 
-        for (i = 0; i < rowCount(); i++) {
-
+        for (int r = 0; r < rowCount(); r++) {
+            for (c = 0; c < columnCount;) {
+                sb.append(columnData[c].row(r));
+                sb.append((++c < columnCount) ? "\t" : "\n");
+            }
         }
 
         return sb.toString();

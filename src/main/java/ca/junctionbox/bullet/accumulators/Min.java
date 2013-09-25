@@ -11,11 +11,11 @@ public final class Min implements Applicable {
     /**
      *
      */
-    private int min = Integer.MAX_VALUE;
+    private long min = Long.MAX_VALUE;
 
 
     @Override
-    public void each(final int i) {
+    public void each(final long i) {
         if (i < min) min = i;
     }
 
@@ -23,7 +23,7 @@ public final class Min implements Applicable {
      *
      * @return
      */
-    public int getResult() {
+    public long getResult() {
         return min;
     }
 }

@@ -6,21 +6,42 @@ import ca.junctionbox.bullet.Applicable;
  * Date: 10/09/2013
  * Time: 19:45
  */
-public class Mean implements Applicable {
-    private final int columnCount;
-    private int cumulativeSum = 0;
+public final class Mean implements Applicable {
+    /**
+     * cumulative mean.
+     */
+    private double mean = 0;
 
-    public Mean(final int colCount) {
-        columnCount = colCount;
+    /**
+     * cumulative count.
+     */
+    private int n = 0;
+
+    /**
+     *
+     */
+    public Mean() {
     }
 
     @Override
-    public void each(int i) {
-        // TODO: (NF 2013-09-10) need to modify this to ensure it is numerically stable.
-        cumulativeSum += i;
+    public void each(final long i) {
+        n++;
+        mean = mean + (1.0 / n) * (i - mean);
     }
 
+    /**
+     *
+     * @return the mean of the iterated collection.
+     */
     public double getResult() {
-        return cumulativeSum /columnCount;
+        return mean;
+    }
+
+    /**
+     *
+     * @return - the number of iterations passed through this object.
+     */
+    public int getN() {
+        return n;
     }
 }

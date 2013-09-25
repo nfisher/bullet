@@ -5,23 +5,22 @@ import java.util.Date;
 /**
  *
 
- Thu Sep 12 21:31:07 BST 2013
+ Thu Sep 19 18:22:01 BST 2013
  type   run     totalMemory      freeMemory duration  mean             sum
- th       0   4,116,054,016   2,072,630,480      119   4.0   2,250,000,000
- th       1   4,116,054,016   2,094,105,560      112   4.0   2,250,000,000
- th       2   4,116,054,016   2,094,105,648      117   4.0   2,250,000,000
- th       3   4,116,054,016   2,094,102,440      128   4.0   2,250,000,000
- th       4   4,116,054,016   2,094,102,440      116   4.0   2,250,000,000
- th       5   4,116,054,016   2,094,102,440      116   4.0   2,250,000,000
- th       6   4,116,054,016   2,094,102,440      115   4.0   2,250,000,000
- th       7   4,116,054,016   2,094,102,440      115   4.0   2,250,000,000
- th       8   4,116,054,016   2,094,102,440      114   4.0   2,250,000,000
- th       9   4,116,054,016   2,094,102,440      118   4.0   2,250,000,000
+ th       0   4,116,054,016   1,672,630,552      464   4.0   1,350,000,000
+ th       1   4,116,054,016   1,694,112,744      133   4.0   1,350,000,000
+ th       2   4,116,054,016   1,672,636,576      132   4.0   1,350,000,000
+ th       3   4,116,054,016   1,694,109,624      131   4.0   1,350,000,000
+ th       4   4,116,054,016   1,694,109,624      133   4.0   1,350,000,000
+ th       5   4,116,054,016   1,694,109,624      136   4.0   1,350,000,000
+ th       6   4,116,054,016   1,694,109,624      132   4.0   1,350,000,000
+ th       7   4,116,054,016   1,694,109,624      134   4.0   1,350,000,000
+ th       8   4,116,054,016   1,694,109,624      133   4.0   1,350,000,000
+ th       9   4,116,054,016   1,694,109,624      132   4.0   1,350,000,000
 
  *
  */
 public class ThreadedPerfTest {
-    public static final int ROWS = 500 * 1000 * 1000;
     public static final int NUM_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     public static void main(final String[] args) throws InterruptedException {
@@ -29,8 +28,7 @@ public class ThreadedPerfTest {
                 Runtime.getRuntime().totalMemory(),
                 Runtime.getRuntime().freeMemory());
         System.err.flush();
-        System.out.println();
-        System.out.println();
+        System.out.flush();
         System.out.println(new Date());
         System.out.printf("%1$-5s %2$4s %3$15s %4$15s %5$8s %6$5s %7$15s\n",
                           "type", "run", "totalMemory", "freeMemory", "duration", "mean", "sum");
@@ -46,8 +44,7 @@ public class ThreadedPerfTest {
 
     private static void perfRun(final int runNum) throws InterruptedException {
         int threadCount =  NUM_PROCESSORS;
-        final int[] array = createRows();
-
+        final long[] array = createRows();
 
         final long start = System.currentTimeMillis();
         ThreadedSum[] threadedSums = new ThreadedSum[threadCount];
@@ -81,9 +78,9 @@ public class ThreadedPerfTest {
                 "th", runNum, totalMemory, freeMemory, duration, mean, s);
     }
 
-    private static int[] createRows() {
-        int[] array = new int[ROWS];
-        for (int i = 0; i < ROWS; i++) {
+    private static long[] createRows() {
+        long[] array = new long[PerfTest.ROWS];
+        for (int i = 0; i < PerfTest.ROWS; i++) {
             array[i] = i % 10;
         }
         return array;
@@ -92,12 +89,12 @@ public class ThreadedPerfTest {
 
 
 final class ThreadedSum extends Thread {
-    private final int[] array;
+    private final long[] array;
     private final int offset;
     private final int length;
     private long result = 0;
 
-    public ThreadedSum(final int[] a, final int o, final int l) {
+    public ThreadedSum(final long[] a, final int o, final int l) {
         super();
         array = a;
         offset = o;

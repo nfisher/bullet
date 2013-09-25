@@ -12,4 +12,5 @@ public interface Column {
     public int size();
     public String name();
     public void apply(Applicable f);
+    public Value row(int r);
 }
