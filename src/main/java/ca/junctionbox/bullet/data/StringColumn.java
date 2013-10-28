@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.data;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.Filterable;
 
 /** A column that contains exclusively strings.
  *
@@ -61,7 +62,16 @@ public final class StringColumn implements Column {
     @Override
     public void apply(final Applicable f) {
         for (String row : columnData) {
+            // TODO: (NF 2013-10-14) Implement this.
             //f.each(row);
+        }
+    }
+
+    @Override
+    public void filteredApply(final Applicable f, final Filterable filter) {
+        for (String row : columnData) {
+            // TODO: (NF 2013-10-14) Implement this.
+            //if (filter.filter(row)) f.each(row);
         }
     }
 

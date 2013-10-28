@@ -7,8 +7,19 @@ import ca.junctionbox.bullet.Applicable;
  * Time: 22:56
  */
 public final class KnuthVariance implements Applicable {
+    /**
+     *
+     */
     private final Mean mean = new Mean();
+
+    /**
+     *
+     */
     private double m2 = 0;
+
+    /**
+     *
+     */
     private int n = 0;
 
     @Override

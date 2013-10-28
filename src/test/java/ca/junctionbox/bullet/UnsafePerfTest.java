@@ -71,7 +71,7 @@ public class UnsafePerfTest {
         final long duration = System.currentTimeMillis() - start;
 
         System.out.format("%1$-5s %2$4s %3$,15d %4$,15d %5$8s %6$5s %7$,15d\n",
-                "raw", runNum, totalMemory, freeMemory, duration, mean, sum);
+                "uns", runNum, totalMemory, freeMemory, duration, mean, sum);
     }
 
     private static int[] createRows() {

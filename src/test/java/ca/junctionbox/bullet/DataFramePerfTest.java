@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet;
 
 import ca.junctionbox.bullet.data.Data;
+import ca.junctionbox.bullet.data.Frame;
 
 import java.util.Date;
 
@@ -51,7 +52,7 @@ public class DataFramePerfTest {
         final long start = System.currentTimeMillis();
         long totalMemory = Runtime.getRuntime().totalMemory();
         long freeMemory = Runtime.getRuntime().freeMemory();
-        Data df = Data.frame();
+        Frame df = Data.frame();
         df.col("a", array);
         long s = sum(df, "a");
         double mean = s / array.length;

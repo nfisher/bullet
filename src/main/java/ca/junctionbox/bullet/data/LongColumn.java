@@ -1,11 +1,10 @@
 package ca.junctionbox.bullet.data;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.Filterable;
 
-/** Integer Column.
+/** Long Column.
  *
- * Date: 10/09/2013
- * Time: 19:43
  */
 public final class LongColumn implements Column {
     /**
@@ -56,6 +55,13 @@ public final class LongColumn implements Column {
     public void apply(final Applicable f) {
         for (long row : columnData) {
             f.each(row);
+        }
+    }
+
+    @Override
+    public void filteredApply(final Applicable f, final Filterable filter) {
+        for (long row : columnData) {
+            if (filter.filter(row)) f.each(row);
         }
     }
 

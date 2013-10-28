@@ -1,7 +1,14 @@
 package ca.junctionbox.bullet;
 
-import ca.junctionbox.bullet.accumulators.*;
-import ca.junctionbox.bullet.data.Data;
+import ca.junctionbox.bullet.accumulators.Count;
+import ca.junctionbox.bullet.accumulators.KnuthVariance;
+import ca.junctionbox.bullet.accumulators.Mean;
+import ca.junctionbox.bullet.accumulators.Min;
+import ca.junctionbox.bullet.accumulators.NaiveVariance;
+import ca.junctionbox.bullet.accumulators.StdDev;
+import ca.junctionbox.bullet.accumulators.Sum;
+import ca.junctionbox.bullet.accumulators.WeightedMean;
+import ca.junctionbox.bullet.data.Frame;
 
 /** Utility class to hold some of the standard operators.
  *
@@ -41,10 +48,26 @@ public final class Accumulators {
      * @param colName - column name to calculate the sum of.
      * @return - the sum of all columns.
      */
-    public static long sum(final Data df, final String colName) {
-        Sum sum = new Sum();
+    public static long sum(final Frame df, final String colName) {
+        final Sum sum = new Sum();
         df.apply(sum, colName);
         // TODO: (NF 2013-09-10) Need to handle overflow.
+        return sum.getResult();
+    }
+
+    /**
+     *
+     * @param df - data frame to be summed.
+     * @param colName - column to be summed.
+     * @param filter - filter for values to be summed.
+     * @return - the sum of the values that meet the filter criteria.
+     */
+    public static long sum(final Frame df,
+                           final String colName,
+                           final Filterable filter) {
+
+        final Sum sum = new Sum();
+        df.filteredApply(sum, colName, filter);
         return sum.getResult();
     }
 
@@ -54,7 +77,7 @@ public final class Accumulators {
      * @param colName - column name to calculate the min of.
      * @return - the minimum value in the column.
      */
-    public static long min(final Data df, final String colName) {
+    public static long min(final Frame df, final String colName) {
         Min min = new Min();
         df.apply(min, colName);
         return min.getResult();
@@ -64,10 +87,23 @@ public final class Accumulators {
      *
      * @param df - data frame to count the columns of.
      * @param colName - column name to count tee-hee
-     * @return
+     * @return - row count.
      */
-    public static int count(final Data df, final String colName) {
+    public static int count(final Frame df, final String colName) {
         return df.rowCount();
+    }
+
+    /**
+     *
+     * @param df  - data frame to count the columns of.
+     * @param colName  - column name to count tee-hee
+     * @param filter - only count values that match filter.
+     * @return - filtered row count.
+     */
+    public static long count(final Frame df, final String colName, final Filterable filter) {
+        Count count = new Count();
+        df.filteredApply(count, colName, filter);
+        return count.getResult();
     }
 
     /** utility function to calculate sd.
@@ -76,7 +112,7 @@ public final class Accumulators {
      * @param colName - column name to calculate the sd of.
      * @return - the sd of the specified column.
      */
-    public static double sd(final Data df, final String colName) {
+    public static double sd(final Frame df, final String colName) {
         StdDev sd = new StdDev();
         df.apply(sd, colName);
         return sd.getResult();
@@ -90,7 +126,9 @@ public final class Accumulators {
      * @param mean - the mean of the specified column.
      * @return - the variance of the specified column.
      */
-    public static double variancen(final Data df, final String colName, final double mean) {
+    public static double variancen(final Frame df,
+                                   final String colName,
+                                   final double mean) {
         NaiveVariance var = new NaiveVariance(mean);
         df.apply(var, colName);
         return var.getResult();
@@ -102,7 +140,7 @@ public final class Accumulators {
      * @param colname - column to have variancek applied to.
      * @return - the calculated variance.
      */
-    public static double variancek(final Data df, final String colname) {
+    public static double variancek(final Frame df, final String colname) {
         KnuthVariance var = new KnuthVariance();
         df.apply(var, colname);
         return var.getResult();
@@ -114,7 +152,7 @@ public final class Accumulators {
      * @param colName - column name to calculate the mean of.
      * @return - the mean of the column.
      */
-    public static double mean(final Data df, final String colName) {
+    public static double mean(final Frame df, final String colName) {
         Mean mean = new Mean();
         df.apply(mean, colName);
         return mean.getResult();
@@ -126,7 +164,7 @@ public final class Accumulators {
      * @param colName - column to calculate the mean of.
      * @return - the weighted mean of the column.
      */
-    public static double meanw(final Data df, final String colName) {
+    public static double meanw(final Frame df, final String colName) {
         WeightedMean mean = new WeightedMean();
         df.apply(mean, colName);
         return mean.getResult();

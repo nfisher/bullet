@@ -9,6 +9,9 @@ import ca.junctionbox.bullet.Applicable;
  */
 public final class StdDev implements Applicable {
     // TODO: (NF 2013-09-25) Should probably use a factory method and create an accumulator interface.
+    /**
+     *
+     */
     private final KnuthVariance variance = new KnuthVariance();
 
     @Override

@@ -17,11 +17,6 @@ public final class Mean implements Applicable {
      */
     private int n = 0;
 
-    /**
-     *
-     */
-    public Mean() {
-    }
 
     @Override
     public void each(final long i) {
