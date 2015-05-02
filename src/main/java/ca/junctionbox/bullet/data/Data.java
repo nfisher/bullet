@@ -31,4 +31,19 @@ public final class Data {
     public static Frame readTsv(final String filename) {
         return null;
     }
+
+    public static Frame readW3C(final String filename) {
+        return null;
+    }
+}
+
+class W3CReader {
+    // GZip first two bytes; 0x1f,0x8b
+    public void eachLine(final String line) {
+
+    }
+
+    public Frame getFrame() {
+        return null;
+    }
 }

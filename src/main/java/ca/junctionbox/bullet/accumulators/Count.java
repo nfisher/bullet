@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /**
  * Date: 14/10/2013
@@ -9,11 +10,12 @@ import ca.junctionbox.bullet.Applicable;
 public class Count implements Applicable {
     private long count = 0;
 
-    public void each(final long v) {
-        count++;
-    }
-
     public long getResult() {
         return count;
+    }
+
+    @Override
+    public void each(Value v) {
+        count++;
     }
 }

@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.filters;
 
 import ca.junctionbox.bullet.Filterable;
+import ca.junctionbox.bullet.data.Value;
 
 /**
  *
@@ -26,5 +27,10 @@ public class GreaterThan implements Filterable {
      */
     public boolean filter(final long v) {
         return (v > comparison);
+    }
+
+    @Override
+    public boolean filter(final Value v) {
+        return filter(v.asLong());
     }
 }

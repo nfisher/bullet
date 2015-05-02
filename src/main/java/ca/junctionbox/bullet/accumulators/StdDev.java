@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /** Calculates the standard deviation of a column.
  *
@@ -14,7 +15,6 @@ public final class StdDev implements Applicable {
      */
     private final KnuthVariance variance = new KnuthVariance();
 
-    @Override
     public void each(final long i) {
         variance.each(i);
     }
@@ -25,5 +25,10 @@ public final class StdDev implements Applicable {
      */
     public double getResult() {
         return Math.sqrt(variance.getResult());
+    }
+
+    @Override
+    public void each(final Value v) {
+        each(v.asLong());
     }
 }

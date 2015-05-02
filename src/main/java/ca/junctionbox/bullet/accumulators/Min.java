@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /** Retrieves the minimum value in the set.
  *
@@ -13,8 +14,6 @@ public final class Min implements Applicable {
      */
     private long min = Long.MAX_VALUE;
 
-
-    @Override
     public void each(final long i) {
         if (i < min) min = i;
     }
@@ -25,5 +24,10 @@ public final class Min implements Applicable {
      */
     public long getResult() {
         return min;
+    }
+
+    @Override
+    public void each(final Value v) {
+        each(v.asLong());
     }
 }

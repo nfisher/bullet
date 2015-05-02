@@ -8,5 +8,6 @@ package ca.junctionbox.bullet.data;
 public enum ValueTypes {
     STRING,
     LONG,
-    DOUBLE
+    DOUBLE,
+    BOOLEAN
 }

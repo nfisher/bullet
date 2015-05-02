@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /**
  * Date: 10/09/2013
@@ -39,7 +40,6 @@ public final class NaiveVariance implements Applicable {
         this(m, false);
     }
 
-    @Override
     public void each(final long i) {
         double diff = i - mean;
         tally += (diff * diff);
@@ -52,5 +52,10 @@ public final class NaiveVariance implements Applicable {
      */
     public double getResult() {
         return tally / counter;
+    }
+
+    @Override
+    public void each(final Value v) {
+        each(v.asLong());
     }
 }

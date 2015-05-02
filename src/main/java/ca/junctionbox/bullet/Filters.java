@@ -25,6 +25,10 @@ public final class Filters {
         return new GreaterThanOrEqual(c);
     }
 
+    public static Filterable ifTrue() {
+        return new True();
+    }
+
     /**
      *
      * @param c - number to compare if less than.

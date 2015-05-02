@@ -1,6 +1,6 @@
 package ca.junctionbox.bullet;
 
-import ca.junctionbox.bullet.data.LongColumn;
+import ca.junctionbox.bullet.data.LongSeries;
 
 import java.util.Date;
 
@@ -48,7 +48,7 @@ public class ColumnValuePerfTest {
         final long[] array = createRows();
 
         final long start = System.currentTimeMillis();
-        LongColumn longColumn = LongColumn.create("test", array);
+        LongSeries longColumn = LongSeries.create("test", array);
         long sum = 0;
         long totalMemory = Runtime.getRuntime().totalMemory();
         long freeMemory = Runtime.getRuntime().freeMemory();

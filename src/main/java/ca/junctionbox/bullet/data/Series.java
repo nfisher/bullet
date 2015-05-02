@@ -8,12 +8,13 @@ import ca.junctionbox.bullet.Filterable;
  * Date: 10/09/2013
  * Time: 19:42
  */
-public interface Column {
+public interface Series {
+    String name = "";
     public ValueTypes type();
     public int size();
     public String name();
     public void apply(final Applicable f);
     public void filteredApply(final Applicable f, final Filterable filter);
-
     public Value row(int r);
+    public Series conditionalClone(final BooleanSeries bs);
 }

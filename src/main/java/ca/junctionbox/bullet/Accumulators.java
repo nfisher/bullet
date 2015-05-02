@@ -1,14 +1,8 @@
 package ca.junctionbox.bullet;
 
-import ca.junctionbox.bullet.accumulators.Count;
-import ca.junctionbox.bullet.accumulators.KnuthVariance;
-import ca.junctionbox.bullet.accumulators.Mean;
-import ca.junctionbox.bullet.accumulators.Min;
-import ca.junctionbox.bullet.accumulators.NaiveVariance;
-import ca.junctionbox.bullet.accumulators.StdDev;
-import ca.junctionbox.bullet.accumulators.Sum;
-import ca.junctionbox.bullet.accumulators.WeightedMean;
+import ca.junctionbox.bullet.accumulators.*;
 import ca.junctionbox.bullet.data.Frame;
+import ca.junctionbox.bullet.data.Series;
 
 /** Utility class to hold some of the standard operators.
  *
@@ -106,6 +100,23 @@ public final class Accumulators {
         return count.getResult();
     }
 
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public static long count(final Series s) {
+        Count count = new Count();
+        s.apply(count);
+        return count.getResult();
+    }
+
+    public static long count(final Series s, final Filterable filter) {
+        Count count = new Count();
+        s.filteredApply(count, filter);
+        return count.getResult();
+    }
+
     /** utility function to calculate sd.
      *
      * @param df - data frame to apply the sd() operation to.
@@ -118,29 +129,13 @@ public final class Accumulators {
         return sd.getResult();
     }
 
-    /** naively calculated variance using a numerically unstable method.
-     *
-     *
-     * @param df - data frame to apply the variancen() operation against.
-     * @param colName - column name to calculate the variance of.
-     * @param mean - the mean of the specified column.
-     * @return - the variance of the specified column.
-     */
-    public static double variancen(final Frame df,
-                                   final String colName,
-                                   final double mean) {
-        NaiveVariance var = new NaiveVariance(mean);
-        df.apply(var, colName);
-        return var.getResult();
-    }
-
     /** Knuth calculated variance.
      *
      * @param df - data frame.
-     * @param colname - column to have variancek applied to.
+     * @param colname - column to have variance applied to.
      * @return - the calculated variance.
      */
-    public static double variancek(final Frame df, final String colname) {
+    public static double variance(final Frame df, final String colname) {
         KnuthVariance var = new KnuthVariance();
         df.apply(var, colname);
         return var.getResult();
@@ -154,18 +149,6 @@ public final class Accumulators {
      */
     public static double mean(final Frame df, final String colName) {
         Mean mean = new Mean();
-        df.apply(mean, colName);
-        return mean.getResult();
-    }
-
-    /**
-     *
-     * @param df - data frame to apply the meanw() operation against.
-     * @param colName - column to calculate the mean of.
-     * @return - the weighted mean of the column.
-     */
-    public static double meanw(final Frame df, final String colName) {
-        WeightedMean mean = new WeightedMean();
         df.apply(mean, colName);
         return mean.getResult();
     }

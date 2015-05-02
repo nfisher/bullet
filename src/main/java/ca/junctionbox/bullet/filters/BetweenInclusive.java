@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.filters;
 
 import ca.junctionbox.bullet.Filterable;
+import ca.junctionbox.bullet.data.Value;
 
 public class BetweenInclusive implements Filterable {
     private final long lower;
@@ -11,8 +12,12 @@ public class BetweenInclusive implements Filterable {
         upper = u;
     }
 
-    @Override
     public boolean filter(final long v) {
         return (v >= lower && v <= upper);
+    }
+
+    @Override
+    public boolean filter(Value v) {
+        return filter(v.asLong());
     }
 }

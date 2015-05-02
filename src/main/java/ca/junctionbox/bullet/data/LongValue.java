@@ -37,6 +37,11 @@ public final class LongValue implements Value {
         return ValueTypes.LONG;
     }
 
+    @Override
+    public boolean asBoolean() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void setValue(final long v) {
         value = v;
     }

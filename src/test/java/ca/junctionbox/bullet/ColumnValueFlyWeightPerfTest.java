@@ -1,6 +1,6 @@
 package ca.junctionbox.bullet;
 
-import ca.junctionbox.bullet.data.LongColumn;
+import ca.junctionbox.bullet.data.LongSeries;
 import ca.junctionbox.bullet.data.LongValue;
 
 import java.util.Date;
@@ -52,7 +52,7 @@ public class ColumnValueFlyWeightPerfTest {
         long totalMemory = Runtime.getRuntime().totalMemory();
         long freeMemory = Runtime.getRuntime().freeMemory();
 
-        LongColumn longColumn = LongColumn.create("test", array);
+        LongSeries longColumn = LongSeries.create("test", array);
         LongValue lv = new LongValue();
         for (int i = 0; i < array.length; i++) {
             longColumn.row(i, lv);

@@ -22,6 +22,11 @@ public final class StringValue implements Value {
         return ValueTypes.STRING;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public boolean asBoolean() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /**
      *
      * @return

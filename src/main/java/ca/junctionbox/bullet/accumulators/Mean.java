@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /**
  * Date: 10/09/2013
@@ -19,9 +20,9 @@ public final class Mean implements Applicable {
 
 
     @Override
-    public void each(final long i) {
+    public void each(final Value value) {
         n++;
-        mean = mean + (1.0 / n) * (i - mean);
+        mean = mean + (1.0 / n) * (value.asLong() - mean);
     }
 
     /**

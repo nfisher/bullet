@@ -16,6 +16,12 @@ public interface Value {
      *
      * @return
      */
+    boolean asBoolean();
+
+    /**
+     *
+     * @return
+     */
     double asDouble();
 
     /**

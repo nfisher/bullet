@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.filters;
 
 import ca.junctionbox.bullet.Filterable;
+import ca.junctionbox.bullet.data.Value;
 
 /**
  * Date: 14/10/2013
@@ -13,8 +14,12 @@ public class LessThan implements Filterable {
         comparison = c;
     }
 
-    @Override
     public boolean filter(final long v) {
         return (v < comparison);
+    }
+
+    @Override
+    public boolean filter(Value v) {
+        return filter(v.asLong());
     }
 }

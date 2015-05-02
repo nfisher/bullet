@@ -1,6 +1,7 @@
 package ca.junctionbox.bullet.accumulators;
 
 import ca.junctionbox.bullet.Applicable;
+import ca.junctionbox.bullet.data.Value;
 
 /** Sum stuff up.
  *
@@ -13,7 +14,6 @@ public final class Sum implements Applicable {
      */
     private long total = 0;
 
-    @Override
     public void each(final long i) {
         // TODO: (NF 2013-09-10) Handle overflow.
         total += i;
@@ -43,5 +43,10 @@ public final class Sum implements Applicable {
      */
     public long getResult() {
         return total;
+    }
+
+    @Override
+    public void each(final Value v) {
+        each(v.asLong());
     }
 }
